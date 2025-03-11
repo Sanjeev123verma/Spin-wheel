@@ -23,6 +23,14 @@ const RouletteWheel = () => {
     localStorage.setItem("rouletteNames", JSON.stringify(names));
   }, [names]);
 
+   // Fisher-Yates shuffle algorithm to randomize the names array.
+   const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
+
   // Add a new name.
   const handleAddName = () => {
     if (inputName.trim() !== "") {
@@ -51,6 +59,13 @@ const RouletteWheel = () => {
     setWinner(names[prizeNumber].option);
   };
 
+   // Shuffle the names array.
+   const handleShuffleNames = () => {
+    const newNames = [...names];
+    shuffleArray(newNames);
+    setNames(newNames);
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-4 relative">
       {/* Winner display with confetti (positioned at the top center) */}
@@ -75,6 +90,12 @@ const RouletteWheel = () => {
           className="bg-green-500 text-white p-2 rounded"
         >
           Add Name
+        </button>
+        <button
+          onClick={handleShuffleNames}
+          className="bg-yellow-500 text-white p-2 rounded"
+        >
+          Shuffle Names
         </button>
       </div>
 
